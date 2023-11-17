@@ -41,7 +41,7 @@ pipeline {
         stage('Deployment') {
             steps {
                 script {
-                    sh 'ansible-playbook -i /etc/ansible/hosts /var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml'
+                    ansiblePlaybook credentialsId: 'private-key', installation: 'Ansible', inventory: '/etc/ansible/hosts', playbook: '/var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml', vaultTmpPath: ''
                 }
             }
         }
