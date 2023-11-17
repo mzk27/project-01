@@ -56,12 +56,13 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            //steps {
-            //    script {
-            //        ansiblePlaybook inventory: '~/ansible/hosts', playbook: '~/ansible/deploy_playbook.yml', vaultTmpPath: ''
-                }
-            }
-        }
+        // stage('Deploy') {
+        //     steps {
+        //         script {
+        //             // Replace placeholder paths with actual paths
+        //             ansiblePlaybook inventory: '~/ansible/hosts', playbook: '~/ansible/deploy_playbook.yml', vaultTmpPath: ''
+        //         }
+        //     }
+        // }
     }
 }
