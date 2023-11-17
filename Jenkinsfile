@@ -41,14 +41,13 @@ pipeline {
         stage('Deployment') {
             steps {
                 script {
-                    ansiblePlaybook(
-                        credentialsId: 'private-key',
-                        installation: 'Ansible', // This should match the tool name in Jenkins configuration
+                    ansiblePlaybook (
+                        credentialsId: 'jenkins-private-key',
+                        installation: 'Ansible',
+                        inventory: '/home/jenkins/ansible/hosts',
                         playbook: '/var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml',
-                        inventory: '/etc/ansible/hosts',
-                        private_key: '/var/lib/jenkins/workspace/Flask_App/ssh15542448156031316992.key',
-                        disableHostKeyChecking: true,
-                        extras: '-u jenkins' // Specify the SSH user
+                        vaultTmpPath: ''
+                        // Add any other parameters as needed
                     )
                 }
             }
