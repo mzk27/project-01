@@ -8,46 +8,16 @@ pipeline {
             }
         }
 
-        stage('Print Environment') {
-            steps {
-                script {
-                    sh 'echo "PATH: $PATH"'
-                    sh 'echo "PYTHONPATH: $PYTHONPATH"'
-                    sh 'echo "which python3: $(which python3)"'
-                }
-            }
-        }
-
-        stage('Set Up Virtual Environment') {
-            steps {
-                script {            
-                    // Create virtual environment
-                     sh 'python3 -m venv venv'
-                }
-            }
-        }
-
-        stage('Activate Virtual Environment') {
-            steps {
-                script {
-                    sh 'chmod +x venv/bin/activate'
-                    sh '. venv/bin/activate'
-                }
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 script {
+                    // Create virtual environment
+                    sh 'python3 -m venv venv'
+                    // Activate Virtual Environment
+                    sh 'chmod +x venv/bin/activate'
+                    sh '. venv/bin/activate'
+                    // Install required packages and modules
                     sh 'venv/bin/pip install -r requirements.txt'
-                }
-            }
-        }
-
-        stage('Build and Run Flask App') {
-            steps {
-                script {
-                    sh 'venv/bin/python3 app.py'
                 }
             }
         }
