@@ -30,7 +30,7 @@ pipeline {
             }
         }
 
-        stage('Pull deployment scripts') {
+        stage('Pull Deployment Scripts') {
             steps {
                 script {
                     git branch: 'main', url: 'https://github.com/mzk27/deploy-config.git'
@@ -38,14 +38,12 @@ pipeline {
             }
         }
 
-        // stage('Deploy') {
-        //     steps {
-        //         script {
-        //             // Replace placeholder paths with actual paths
-        //             ansiblePlaybook inventory: '~/ansible/hosts', playbook: '~/ansible/deploy_playbook.yml', vaultTmpPath: ''
-        //                sh 'ansible-playbook -i /etc/ansible/hosts deploy-config/deployment/playbook.yml'
-        //         }
-        //     }
-        // }
+        stage('Deployment') {
+            steps {
+                script {
+                    sh 'ansible-playbook -i /etc/ansible/hosts /var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml'
+                }
+            }
+        }
     }
 }
