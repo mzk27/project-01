@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container-1">
+        <div class="dabba-1">
+            <h1>Result</h1>
+            <div class="result-section">
+                <p>The factorial of {{ n }} is:<br>{{ factorial_result }}</p>
+                <p>Time taken to calculate factorial of {{ n }}: {{ factorial_time_sec }} seconds</p>
+                <p>Time taken to calculate factorial of {{ n }} in nanoseconds: {{ factorial_time_ns }} nanoseconds</p>
+                <p>{{ feedback_message }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
