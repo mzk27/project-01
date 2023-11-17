@@ -8,10 +8,20 @@ pipeline {
             }
         }
 
+        stage('Print Environment') {
+            steps {
+                script {
+                    sh 'echo "PATH: $PATH"'
+                    sh 'echo "PYTHONPATH: $PYTHONPATH"'
+                    sh 'echo "which python3: $(which python3)"'
+                }
+            }
+        }
+
         stage('Set Up Virtual Environment') {
             steps {
                 script {
-                    sh 'python -m venv venv'
+                    sh 'python3 -m venv venv'
                 }
             }
         }
@@ -35,7 +45,7 @@ pipeline {
         stage('Build and Run Flask App') {
             steps {
                 script {
-                    sh 'venv/bin/python app.py'
+                    sh 'venv/bin/python3 app.py'
                 }
             }
         }
