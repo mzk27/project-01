@@ -22,10 +22,10 @@ pipeline {
             steps {
                 script {
                     // Install python3-venv package
-                    sh 'sudo apt install python3-venv -y'
+                    sh 'apt-get install -y python3-venv'
             
                     // Create virtual environment
-                    sh 'python3 -m venv venv'
+                     sh 'python3 -m venv venv'
                 }
             }
         }
