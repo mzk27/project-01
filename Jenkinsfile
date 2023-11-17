@@ -30,14 +30,6 @@ pipeline {
             }
         }
 
-        stage('Deactivate Virtual Environment') {
-            steps {
-                script {
-                    sh 'deactivate'
-                }
-            }
-        }
-
         // stage('Deploy') {
         //     steps {
         //         script {
