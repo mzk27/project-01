@@ -41,6 +41,10 @@ pipeline {
         stage('Deployment') {
             steps {
                 script {
+                    echo 'Debug Information:'
+                    sh 'env'  // Print environment variables for debugging
+                    sh 'ansible --version'  // Check Ansible version for debugging
+
                     ansiblePlaybook credentialsId: 'private-key', installation: 'Ansible', inventory: '/etc/ansible/hosts', playbook: '/var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml', vaultTmpPath: ''
                 }
             }
