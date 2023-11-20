@@ -2,22 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
-                checkout scm
+                script {
+                    echo '--- Checking out SCM ---'
+                    checkout scm
+                }
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Create virtual environment
+                    echo '--- Installing Dependencies ---'
                     sh 'python3 -m venv venv'
-                    // Activate Virtual Environment
-                    sh 'chmod +x venv/bin/activate'
                     sh '. venv/bin/activate'
-                    // Install required packages and modules
-                    sh 'venv/bin/pip install -r requirements.txt'
+                    sh 'pip install -r requirements.txt'
                 }
             }
         }
@@ -25,6 +25,7 @@ pipeline {
         stage('Testing') {
             steps {
                 script {
+                    echo '--- Running Tests ---'
                     sh 'venv/bin/pytest -s test_calculator.py'
                 }
             }
@@ -33,7 +34,8 @@ pipeline {
         stage('Pull Deployment Scripts') {
             steps {
                 script {
-                    git branch: 'main', url: 'https://github.com/mzk27/deploy-config.git'
+                    echo '--- Pulling Deployment Scripts ---'
+                    git branch: 'main', credentialsId: 'your-credentials-id', url: 'https://github.com/mzk27/deploy-config.git'
                 }
             }
         }
@@ -41,22 +43,19 @@ pipeline {
         stage('Deployment') {
             steps {
                 script {
-                    echo 'Before Ansible Playbook'
+                    echo '--- Before Ansible Playbook ---'
                     sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
-            
-                    ansiblePlaybook (
-                        credentialsId: 'jenkins-private-key',
-                        installation: 'Ansible',
-                        inventory: '/etc/ansible/hosts',
-                        playbook: '/var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml',
-                        vaultTmpPath: ''
-                        // Add any other parameters as needed
-                    )
 
-                    echo 'After Ansible Playbook'
-                    sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
+                    echo '--- Running Ansible Playbook ---'
+                    sh '/usr/bin/ansible-playbook /var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml -i /etc/ansible/hosts'
                 }
             }
+        }
+    }
+
+    post {
+        failure {
+            echo '--- Pipeline Failed ---'
         }
     }
 }
