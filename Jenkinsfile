@@ -15,9 +15,13 @@ pipeline {
             steps {
                 script {
                     echo '--- Installing Dependencies ---'
+                    // Create virtual environment
                     sh 'python3 -m venv venv'
+                    // Activate Virtual Environment
+                    sh 'chmod +x venv/bin/activate'
                     sh '. venv/bin/activate'
-                    sh 'pip install -r requirements.txt'
+                    // Install required packages and modules
+                    sh 'venv/bin/pip install -r requirements.txt'
                 }
             }
         }
@@ -35,7 +39,7 @@ pipeline {
             steps {
                 script {
                     echo '--- Pulling Deployment Scripts ---'
-                    git branch: 'main', credentialsId: 'your-credentials-id', url: 'https://github.com/mzk27/deploy-config.git'
+                    git branch: 'main', url: 'https://github.com/mzk27/deploy-config.git'
                 }
             }
         }
@@ -47,7 +51,17 @@ pipeline {
                     sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
 
                     echo '--- Running Ansible Playbook ---'
-                    sh '/usr/bin/ansible-playbook /var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml -i /etc/ansible/hosts'
+                    ansiblePlaybook (
+                        credentialsId: 'jenkins-private-key',
+                        installation: 'Ansible',
+                        inventory: '/etc/ansible/hosts',
+                        playbook: '/var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml',
+                        vaultTmpPath: ''
+                        // Add any other parameters as needed
+                    )
+
+                    echo 'After Ansible Playbook'
+                    sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
                 }
             }
         }
