@@ -41,6 +41,9 @@ pipeline {
         stage('Deployment') {
             steps {
                 script {
+                    echo 'Before Ansible Playbook'
+                    sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
+            
                     ansiblePlaybook (
                         credentialsId: 'jenkins-private-key',
                         installation: 'Ansible',
@@ -49,6 +52,9 @@ pipeline {
                         vaultTmpPath: ''
                         // Add any other parameters as needed
                     )
+
+                    echo 'After Ansible Playbook'
+                    sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
                 }
             }
         }
