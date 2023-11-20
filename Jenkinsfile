@@ -44,7 +44,7 @@ pipeline {
                     ansiblePlaybook (
                         credentialsId: 'jenkins-private-key',
                         installation: 'Ansible',
-                        inventory: '/home/jenkins/ansible/hosts',
+                        inventory: '/etc/ansible/hosts',
                         playbook: '/var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml',
                         vaultTmpPath: ''
                         // Add any other parameters as needed
