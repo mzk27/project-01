@@ -34,42 +34,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Pull Deployment Scripts') {
-            steps {
-                script {
-                    echo '--- Pulling Deployment Scripts ---'
-                    git branch: 'main', url: 'https://github.com/mzk27/deploy-config.git'
-                }
-            }
-        }
-
-        stage('Deployment') {
-            steps {
-                script {
-                    echo '--- Before Ansible Playbook ---'
-                    sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
-
-                    echo '--- Running Ansible Playbook ---'
-                    ansiblePlaybook (
-                        credentialsId: 'jenkins-private-key',
-                        installation: 'Ansible',
-                        inventory: '/etc/ansible/hosts',
-                        playbook: '/var/lib/jenkins/workspace/Flask_App/deployment/roles/playbook.yml',
-                        vaultTmpPath: ''
-                        // Add any other parameters as needed
-                    )
-
-                    echo '--- After Ansible Playbook ---'
-                    sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
-                }
-            }
-        }
-    }
-
-    post {
-        failure {
-            echo '--- Pipeline Failed ---'
-        }
     }
 }
