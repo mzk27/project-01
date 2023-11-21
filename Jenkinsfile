@@ -42,6 +42,7 @@ pipeline {
                     // Create a directory for deploy-config or use a different path
                     dir('deploy-config') {
                         checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/mzk27/deploy-config.git']]])
+                    }
                 }
             }
         }
