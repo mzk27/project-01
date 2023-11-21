@@ -60,7 +60,7 @@ pipeline {
                         // Add any other parameters as needed
                     )
 
-                    echo 'After Ansible Playbook'
+                    echo '--- After Ansible Playbook ---'
                     sh 'ls -lrt /var/lib/jenkins/workspace/Flask_App/deployment/roles/tasks'
                 }
             }
