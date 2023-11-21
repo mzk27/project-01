@@ -34,5 +34,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Pull Deployment Scripts') {
+            steps {
+                script {
+                    echo '--- Pulling Deployment Scripts ---'
+                    git branch: 'main', url: 'https://github.com/mzk27/deploy-config.git'
+                }
+            }
+        }
     }
 }
