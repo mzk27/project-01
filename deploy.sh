@@ -22,7 +22,19 @@ echo "Cloning your Flask application code from GitHub..."
 git clone https://github.com/mzk27/project-01.git .
 pip3 install -r requirements.txt  # Modify this line if you have a requirements file
 
-# Step 4: Create a systemd service
+# Step 4: Create a sample project and WSGI entry point
+echo "Creating WSGI entry point..."
+cat > wsgi.py <<EOL
+from app import app
+
+if __name__ == "__main__":
+    app.run()
+EOL
+
+echo "Testing Gunicorn's ability to serve the project..."
+gunicorn --bind 0.0.0.0:5000 wsgi:app
+
+# Step 5: Create a systemd service
 echo "Creating a systemd service..."
 cat > /etc/systemd/system/app.service <<EOL
 [Unit]
@@ -43,7 +55,7 @@ EOL
 sudo systemctl start app
 sudo systemctl enable app
 
-# Step 5: Configure Nginx
+# Step 6: Configure Nginx
 echo "Configuring Nginx..."
 cat > /etc/nginx/sites-available/app <<EOL
 server {
@@ -65,7 +77,7 @@ EOL
 sudo ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled
 sudo systemctl restart nginx
 
-# Step 6: Provide necessary Permissions
+# Step 7: Provide necessary Permissions
 echo "Setting up necessary permissions..."
 sudo chmod 775 -R $(pwd)
 sudo systemctl restart nginx
